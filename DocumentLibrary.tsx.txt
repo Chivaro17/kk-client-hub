@@ -1,0 +1,158 @@
+import React, { useState } from 'react';
+import { FolderOpen, FileText, Download, ExternalLink, Search } from 'lucide-react';
+
+interface Document {
+  id: number;
+  name: string;
+  client: string;
+  type: 'Proposal' | 'Contract' | 'Deliverable' | 'Report';
+  size: string;
+  modified: string;
+  driveLink: string;
+}
+
+const DocumentLibrary: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [typeFilter, setTypeFilter] = useState('All');
+
+  const documents: Document[] = [
+    {
+      id: 1,
+      name: "Heritage Construction Renovation Proposal.pdf",
+      client: "Heritage Construction LLC",
+      type: "Proposal",
+      size: "2.4 MB",
+      modified: "Jan 15, 2024",
+      driveLink: "#"
+    },
+    {
+      id: 2,
+      name: "IQT Quality Assurance Contract.docx",
+      client: "Industrial Quality Tech",
+      type: "Contract",
+      size: "1.8 MB",
+      modified: "Jan 12, 2024",
+      driveLink: "#"
+    },
+    {
+      id: 3,
+      name: "Metro Development Phase 1 Report.pdf",
+      client: "Metro Development Group",
+      type: "Report",
+      size: "5.2 MB",
+      modified: "Jan 10, 2024",
+      driveLink: "#"
+    },
+    {
+      id: 4,
+      name: "Heritage Construction Deliverables.zip",
+      client: "Heritage Construction LLC",
+      type: "Deliverable",
+      size: "12.1 MB",
+      modified: "Jan 8, 2024",
+      driveLink: "#"
+    }
+  ];
+
+  const clientFolders = [
+    { name: "Heritage Construction LLC", fileCount: 15, image: "https://d64gsuwffb70l.cloudfront.net/68b9ca73bf373a85f836b23d_1757006494597_1042ea0d.webp" },
+    { name: "Industrial Quality Tech", fileCount: 8, image: "https://d64gsuwffb70l.cloudfront.net/68b9ca73bf373a85f836b23d_1757006496536_59b3054a.webp" },
+    { name: "Metro Development Group", fileCount: 22, image: "https://d64gsuwffb70l.cloudfront.net/68b9ca73bf373a85f836b23d_1757006498515_44501038.webp" }
+  ];
+
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case 'Proposal': return 'bg-blue-100 text-blue-800';
+      case 'Contract': return 'bg-green-100 text-green-800';
+      case 'Deliverable': return 'bg-purple-100 text-purple-800';
+      case 'Report': return 'bg-orange-100 text-orange-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Client Folders */}
+      <div className="bg-white rounded-lg shadow-lg p-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Client Folders</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {clientFolders.map((folder, index) => (
+            <div key={index} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+              <div className="flex items-center mb-3">
+                <img 
+                  src={folder.image} 
+                  alt={folder.name}
+                  className="h-12 w-12 rounded-lg object-cover mr-3"
+                />
+                <div className="flex-1">
+                  <h3 className="font-semibold text-gray-900">{folder.name}</h3>
+                  <p className="text-sm text-gray-600">{folder.fileCount} files</p>
+                </div>
+                <ExternalLink className="h-5 w-5 text-gray-400" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Document Library */}
+      <div className="bg-white rounded-lg shadow-lg p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Recent Documents</h2>
+          <button className="text-red-600 hover:text-red-800 font-medium">View All</button>
+        </div>
+        
+        <div className="flex space-x-4 mb-6">
+          <div className="flex-1 relative">
+            <Search className="h-5 w-5 absolute left-3 top-3 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search documents..."
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <select 
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
+            value={typeFilter}
+            onChange={(e) => setTypeFilter(e.target.value)}
+          >
+            <option value="All">All Types</option>
+            <option value="Proposal">Proposals</option>
+            <option value="Contract">Contracts</option>
+            <option value="Deliverable">Deliverables</option>
+            <option value="Report">Reports</option>
+          </select>
+        </div>
+
+        <div className="space-y-3">
+          {documents.map((doc) => (
+            <div key={doc.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+              <div className="flex items-center flex-1">
+                <FileText className="h-8 w-8 text-gray-400 mr-3" />
+                <div className="flex-1">
+                  <h3 className="font-medium text-gray-900">{doc.name}</h3>
+                  <p className="text-sm text-gray-600">{doc.client} • {doc.size} • Modified {doc.modified}</p>
+                </div>
+                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getTypeColor(doc.type)} mr-4`}>
+                  {doc.type}
+                </span>
+              </div>
+              <div className="flex space-x-2">
+                <button className="p-2 text-gray-400 hover:text-gray-600">
+                  <Download className="h-4 w-4" />
+                </button>
+                <button className="p-2 text-gray-400 hover:text-gray-600">
+                  <ExternalLink className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default DocumentLibrary;

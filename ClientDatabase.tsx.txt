@@ -1,0 +1,155 @@
+import React, { useState } from 'react';
+import { Search, Filter, Plus, ExternalLink } from 'lucide-react';
+
+interface Client {
+  id: number;
+  name: string;
+  contact: string;
+  email: string;
+  unit: string;
+  status: 'Prospect' | 'Active' | 'Past';
+  lastContact: string;
+  asanaLink: string;
+  driveLink: string;
+  notes: string;
+}
+
+const ClientDatabase: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
+
+  const clients: Client[] = [
+    {
+      id: 1,
+      name: "Heritage Construction LLC",
+      contact: "Michael Thompson",
+      email: "m.thompson@heritage.com",
+      unit: "HCMS",
+      status: "Active",
+      lastContact: "2024-01-15",
+      asanaLink: "#",
+      driveLink: "#",
+      notes: "Major renovation project in progress"
+    },
+    {
+      id: 2,
+      name: "Industrial Quality Tech",
+      contact: "Sarah Chen",
+      email: "s.chen@iqtech.com",
+      unit: "IQT",
+      status: "Prospect",
+      lastContact: "2024-01-12",
+      asanaLink: "#",
+      driveLink: "#",
+      notes: "Interested in quality assurance services"
+    },
+    {
+      id: 3,
+      name: "Metro Development Group",
+      contact: "Robert Martinez",
+      email: "r.martinez@metro.com",
+      unit: "HCMS",
+      status: "Active",
+      lastContact: "2024-01-10",
+      asanaLink: "#",
+      driveLink: "#",
+      notes: "Multi-phase commercial development"
+    }
+  ];
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Active': return 'bg-green-100 text-green-800';
+      case 'Prospect': return 'bg-yellow-100 text-yellow-800';
+      case 'Past': return 'bg-gray-100 text-gray-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-lg shadow-lg p-6">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-900">Client Database</h2>
+        <button className="bg-red-800 hover:bg-red-900 text-white px-4 py-2 rounded-lg flex items-center">
+          <Plus className="h-4 w-4 mr-2" />
+          Add Client
+        </button>
+      </div>
+      
+      <div className="flex space-x-4 mb-6">
+        <div className="flex-1 relative">
+          <Search className="h-5 w-5 absolute left-3 top-3 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search clients..."
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <select 
+          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+        >
+          <option value="All">All Status</option>
+          <option value="Active">Active</option>
+          <option value="Prospect">Prospect</option>
+          <option value="Past">Past</option>
+        </select>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full table-auto">
+          <thead>
+            <tr className="bg-gray-50">
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Client</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Contact</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Unit</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Status</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Last Contact</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            {clients.map((client) => (
+              <tr key={client.id} className="hover:bg-gray-50">
+                <td className="px-4 py-3">
+                  <div>
+                    <div className="font-medium text-gray-900">{client.name}</div>
+                    <div className="text-sm text-gray-500">{client.notes}</div>
+                  </div>
+                </td>
+                <td className="px-4 py-3">
+                  <div>
+                    <div className="text-sm font-medium text-gray-900">{client.contact}</div>
+                    <div className="text-sm text-gray-500">{client.email}</div>
+                  </div>
+                </td>
+                <td className="px-4 py-3 text-sm text-gray-900">{client.unit}</td>
+                <td className="px-4 py-3">
+                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(client.status)}`}>
+                    {client.status}
+                  </span>
+                </td>
+                <td className="px-4 py-3 text-sm text-gray-900">{client.lastContact}</td>
+                <td className="px-4 py-3">
+                  <div className="flex space-x-2">
+                    <a href={client.asanaLink} className="text-red-600 hover:text-red-800">
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+                    <a href={client.driveLink} className="text-blue-600 hover:text-blue-800">
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+export default ClientDatabase;

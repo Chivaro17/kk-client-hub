@@ -1,0 +1,82 @@
+import React, { useState } from 'react';
+import { Database, TrendingUp, FolderOpen, MessageSquare, Grid3X3, BookOpen, Settings, Bell, User } from 'lucide-react';
+
+interface NavigationProps {
+  activeTab: string;
+  onTabChange: (tab: string) => void;
+}
+
+const Navigation: React.FC<NavigationProps> = ({ activeTab, onTabChange }) => {
+  const [notifications] = useState(3);
+
+  const navItems = [
+    { id: 'database', label: 'Client Database', icon: Database },
+    { id: 'pipeline', label: 'Live Pipeline', icon: TrendingUp },
+    { id: 'documents', label: 'Document Library', icon: FolderOpen },
+    { id: 'interactions', label: 'Interaction Log', icon: MessageSquare },
+    { id: 'services', label: 'Service Catalog', icon: Grid3X3 },
+    { id: 'knowledge', label: 'Knowledge Base', icon: BookOpen },
+  ];
+
+  return (
+    <nav className="bg-white shadow-lg border-b border-gray-200">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center space-x-8">
+            <div className="flex items-center">
+              <img 
+                src="https://d64gsuwffb70l.cloudfront.net/68b6f62abc953be6da1aa414_1757006442992_37d06f7a.jpeg"
+                alt="K&K Heritage Group"
+                className="h-10 w-10 mr-3"
+              />
+              <span className="text-xl font-bold text-gray-900">CRM Hub</span>
+            </div>
+            
+            <div className="flex space-x-1">
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => onTabChange(item.id)}
+                  className={`flex items-center px-4 py-2 rounded-lg font-medium transition-colors ${
+                    activeTab === item.id
+                      ? 'bg-red-100 text-red-800 border-b-2 border-red-600'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  <item.icon className="h-4 w-4 mr-2" />
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <button className="relative p-2 text-gray-600 hover:text-gray-900">
+              <Bell className="h-5 w-5" />
+              {notifications > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {notifications}
+                </span>
+              )}
+            </button>
+            
+            <button className="p-2 text-gray-600 hover:text-gray-900">
+              <Settings className="h-5 w-5" />
+            </button>
+            
+            <div className="flex items-center space-x-2">
+              <img 
+                src="https://d64gsuwffb70l.cloudfront.net/68b9ca73bf373a85f836b23d_1757006499726_03063264.webp"
+                alt="User Avatar"
+                className="h-8 w-8 rounded-full"
+              />
+              <span className="text-sm font-medium text-gray-700">Account Manager</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default Navigation;

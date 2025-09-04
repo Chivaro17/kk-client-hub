@@ -1,0 +1,162 @@
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Search, Building2, Brain, Shield, Users, Briefcase, Cog } from 'lucide-react';
+
+const ServiceCatalog: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const services = [
+    {
+      id: 1,
+      name: 'Healthcare Management Systems',
+      unit: 'HCMS',
+      description: 'Comprehensive healthcare technology solutions including EHR systems, patient management, and compliance tools.',
+      targetClient: 'Healthcare Providers, Hospitals, Clinics',
+      icon: <Building2 className="h-6 w-6" />,
+      color: 'bg-blue-100 text-blue-800'
+    },
+    {
+      id: 2,
+      name: 'AI & Machine Learning Solutions',
+      unit: 'IQT (K&K Architect)',
+      description: 'Custom AI implementations, data analytics, machine learning models, and intelligent automation systems.',
+      targetClient: 'Technology Companies, Enterprises',
+      icon: <Brain className="h-6 w-6" />,
+      color: 'bg-purple-100 text-purple-800'
+    },
+    {
+      id: 3,
+      name: 'Cybersecurity Services',
+      unit: 'Security Division',
+      description: 'Enterprise security assessments, penetration testing, compliance auditing, and security infrastructure.',
+      targetClient: 'Financial Services, Healthcare, Government',
+      icon: <Shield className="h-6 w-6" />,
+      color: 'bg-red-100 text-red-800'
+    },
+    {
+      id: 4,
+      name: 'Digital Transformation Consulting',
+      unit: 'Business Solutions',
+      description: 'Strategic consulting for digital transformation, process optimization, and technology integration.',
+      targetClient: 'Mid to Large Enterprises',
+      icon: <Cog className="h-6 w-6" />,
+      color: 'bg-green-100 text-green-800'
+    },
+    {
+      id: 5,
+      name: 'Team Augmentation Services',
+      unit: 'Talent Solutions',
+      description: 'Skilled technical professionals for project-based work, long-term engagements, and specialized expertise.',
+      targetClient: 'Startups, Growing Companies',
+      icon: <Users className="h-6 w-6" />,
+      color: 'bg-orange-100 text-orange-800'
+    },
+    {
+      id: 6,
+      name: 'Business Process Automation',
+      unit: 'Operations',
+      description: 'Workflow automation, document management systems, and business process optimization solutions.',
+      targetClient: 'Manufacturing, Professional Services',
+      icon: <Briefcase className="h-6 w-6" />,
+      color: 'bg-indigo-100 text-indigo-800'
+    }
+  ];
+
+  const filteredServices = services.filter(service =>
+    service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    service.unit.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    service.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    service.targetClient.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Service Catalog</h2>
+          <p className="text-gray-600">Complete overview of K&K Group capabilities and offerings</p>
+        </div>
+      </div>
+
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+        <Input
+          placeholder="Search services, units, or target clients..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="pl-10"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredServices.map((service) => (
+          <Card key={service.id} className="hover:shadow-lg transition-shadow border-l-4 border-red-600">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-red-50 rounded-lg text-red-700">
+                    {service.icon}
+                  </div>
+                  <Badge className={service.color}>
+                    {service.unit}
+                  </Badge>
+                </div>
+              </div>
+              <CardTitle className="text-lg">{service.name}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-gray-700 text-sm leading-relaxed">
+                {service.description}
+              </p>
+              
+              <div className="bg-gray-50 p-3 rounded-lg">
+                <h4 className="font-medium text-gray-900 mb-1">Target Clients:</h4>
+                <p className="text-sm text-gray-600">{service.targetClient}</p>
+              </div>
+              
+              <div className="flex justify-between items-center pt-2">
+                <button className="text-red-700 hover:text-red-800 font-medium text-sm">
+                  Learn More →
+                </button>
+                <button className="text-gray-500 hover:text-gray-700 text-sm">
+                  Contact Specialist
+                </button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {filteredServices.length === 0 && (
+        <div className="text-center py-12">
+          <div className="text-gray-400 mb-4">
+            <Search className="h-12 w-12 mx-auto" />
+          </div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">No services found</h3>
+          <p className="text-gray-600">Try adjusting your search terms</p>
+        </div>
+      )}
+
+      <Card className="bg-red-50 border-red-200">
+        <CardContent className="p-6">
+          <div className="flex items-start gap-4">
+            <div className="p-2 bg-red-100 rounded-lg">
+              <Briefcase className="h-6 w-6 text-red-700" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-red-900 mb-2">Custom Solutions Available</h3>
+              <p className="text-red-800 text-sm">
+                Don't see exactly what you need? K&K Group specializes in custom solutions tailored to unique business requirements. 
+                Contact our Business Development team to discuss your specific needs.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default ServiceCatalog;

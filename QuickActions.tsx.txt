@@ -1,0 +1,53 @@
+import React from 'react';
+import { Plus, Upload, Download, RefreshCw } from 'lucide-react';
+
+const QuickActions: React.FC = () => {
+  const actions = [
+    {
+      icon: Plus,
+      label: 'New Client',
+      description: 'Add a new client to the database',
+      color: 'bg-green-600 hover:bg-green-700'
+    },
+    {
+      icon: Upload,
+      label: 'Import Data',
+      description: 'Import clients from CSV or Excel',
+      color: 'bg-blue-600 hover:bg-blue-700'
+    },
+    {
+      icon: Download,
+      label: 'Export Report',
+      description: 'Generate client relationship report',
+      color: 'bg-purple-600 hover:bg-purple-700'
+    },
+    {
+      icon: RefreshCw,
+      label: 'Sync Asana',
+      description: 'Refresh data from Asana projects',
+      color: 'bg-orange-600 hover:bg-orange-700'
+    }
+  ];
+
+  return (
+    <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+      <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {actions.map((action, index) => (
+          <button
+            key={index}
+            className={`${action.color} text-white p-4 rounded-lg transition-colors group`}
+          >
+            <div className="flex flex-col items-center text-center">
+              <action.icon className="h-8 w-8 mb-2 group-hover:scale-110 transition-transform" />
+              <div className="font-semibold text-sm">{action.label}</div>
+              <div className="text-xs opacity-90 mt-1">{action.description}</div>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default QuickActions;
